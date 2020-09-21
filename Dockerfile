@@ -11,4 +11,8 @@ RUN wget https://launcher.mojang.com/v1/objects/f02f4473dbf152c23d7d484952121db0
 RUN java -jar server.jar
 # Agree to EULA
 RUN sed -i 's/false/true/' eula.txt
+# Create directory for volume before creating the volume. Otherwise volume will be owned by root
+RUN mkdir /home/mc/server/world
+# Create volume to persist world data on container close
+VOLUME /home/mc/server/world
 CMD ["java", "-jar", "-XX:InitialRAMPercentage=75.0", "-XX:MaxRAMPercentage=75.0", "-XX:+UseG1GC", "server.jar", "--nogui"]
